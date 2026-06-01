@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import PizzaBuilder from './pages/PizzaBuilder';
 import MyOrders from './pages/MyOrders';
@@ -19,6 +21,8 @@ return (
 <Route path="/" element={<Navigate to={home} />} />
 <Route path="/login" element={isAuthenticated ? <Navigate to={home} /> : <Login />} />
 <Route path="/register" element={isAuthenticated ? <Navigate to={home} /> : <Register />} />
+<Route path="/forgot-password" element={isAuthenticated ? <Navigate to={home} /> : <ForgotPassword />} />
+<Route path="/reset-password/:token" element={isAuthenticated ? <Navigate to={home} /> : <ResetPassword />} />
 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 <Route path="/build-pizza" element={<ProtectedRoute><PizzaBuilder /></ProtectedRoute>} />
 <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
