@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import PizzaBuilder from './pages/PizzaBuilder';
 import MyOrders from './pages/MyOrders';
@@ -23,6 +24,7 @@ return (
 <Route path="/register" element={isAuthenticated ? <Navigate to={home} /> : <Register />} />
 <Route path="/forgot-password" element={isAuthenticated ? <Navigate to={home} /> : <ForgotPassword />} />
 <Route path="/reset-password/:token" element={isAuthenticated ? <Navigate to={home} /> : <ResetPassword />} />
+<Route path="/verify-email/:token" element={<VerifyEmail />} />
 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
 <Route path="/build-pizza" element={<ProtectedRoute><PizzaBuilder /></ProtectedRoute>} />
 <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
