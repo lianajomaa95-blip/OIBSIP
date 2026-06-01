@@ -1,16 +1,20 @@
-import axios from 'axios';// Create an axios instance with the backend URL pre-configured
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const api = axios.create({
-baseURL: 'http://localhost:5000/api',
-headers: {
-'Content-Type': 'application/json',
-},
-});// Automatically attach the JWT token from localStorage to every request
+  baseURL: `${API_URL}/api`,
+});
+
 api.interceptors.request.use((config) => {
-const user = localStorage.getItem('user');
-if (user) {
-const { token } = JSON.parse(user);
-if (token) {config.headers['Authorization'] = `Bearer ${token}`;
-}
-}
-return config;
-});export default api;
+  const userInfo = localStorage.getItem('user');
+  if (userInfo) {
+    const user = JSON.parse(userInfo);
+    if (user.token) {
+      config.headers.Authorization = `Bearer ${user.token}`;
+    }
+  }
+  return config;
+});
+
+export default api;
