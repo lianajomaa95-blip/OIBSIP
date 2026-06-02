@@ -1,49 +1,9 @@
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmail = require('../utils/sendEmail');
 const { getVerificationEmail, getPasswordResetEmail } = require('../utils/emailTemplates');
 
-// TEMPORARY diagnostic endpoint - verifies the SMTP connection/login without
-// sending mail, and returns the exact error. Remove once email delivery works.
-const smtpDebug = async (req, res) => {
-  const port = Number(process.env.EMAIL_PORT);
-  const maskedUser = process.env.EMAIL_USER
-    ? process.env.EMAIL_USER.replace(/(.{2}).*(@.*)/, '$1***$2')
-    : null;
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port,
-    secure: port === 465,
-    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-    connectionTimeout: 8000,
-    greetingTimeout: 8000,
-  });
-  try {
-    await transporter.verify();
-    return res.json({
-      ok: true,
-      host: process.env.EMAIL_HOST,
-      port,
-      secure: port === 465,
-      user: maskedUser,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      code: error.code,
-      command: error.command,
-      message: error.message,
-      host: process.env.EMAIL_HOST || null,
-      port: Number.isNaN(port) ? null : port,
-      secure: port === 465,
-      hasUser: !!process.env.EMAIL_USER,
-      hasPass: !!process.env.EMAIL_PASS,
-      user: maskedUser,
-    });
-  }
-};
 // Helper: generate a random token (e.g., for email verification or password reset)
 const generateRandomToken = () => {
 return crypto.randomBytes(32).toString('hex');
@@ -295,5 +255,4 @@ getUserProfile,
 verifyEmail,
 forgotPassword,
 resetPassword,
-smtpDebug,
 };
